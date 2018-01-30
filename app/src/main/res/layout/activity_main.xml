@@ -1,33 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.grace.appproject.MainActivity">
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"/>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:orientation="horizontal">
 
-    </android.support.design.widget.AppBarLayout>
+        <Button
+            android:onClick="methodName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="alarm"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:textColor="#1e053c"
+            android:fontFamily="@font/roboto_light"
+            android:textAllCaps="false"/>
 
-    <include layout="@layout/content_main" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="to-do"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:textColor="#1e053c"
+            android:fontFamily="@font/roboto_light"
+            android:textAllCaps="false"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="weather"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:textColor="#1e053c"
+            android:fontFamily="@font/roboto_light"
+            android:textAllCaps="false"/>
+    </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:background="#c9b8d1">
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="+ Click to Add"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:background="#856ec7"
+        android:layout_weight="0.8"
+        android:textAllCaps="false"
+        android:fontFamily="@font/roboto_regular"/>
+
+</LinearLayout>
