@@ -58,20 +58,7 @@
         android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="6.8"
         android:background="#c9b8d1"></ScrollView>
-
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
-        android:background="#856ec7"
-        android:fontFamily="@font/roboto_regular"
-        android:onClick="onClick"
-        android:text="+ Click to Add"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="16dp" />
 
 </LinearLayout>

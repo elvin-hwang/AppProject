@@ -1,31 +1,28 @@
 package com.example.grace.appproject;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class AlarmActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnAlarm, btnTodo, btnWeather, btnAdd;
+    private Button btnAlarm, btnTodo, btnWeather;
     private ScrollView sv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        init();
+        setContentView(R.layout.activity_alarm);
     }
 
     private void init() {
         btnAlarm = (Button) findViewById(R.id.btnAlarm);
         btnTodo = (Button) findViewById(R.id.btnTodo);
         btnWeather = (Button) findViewById(R.id.btnWeather);
-        btnAdd = (Button) findViewById(R.id.btnAdd);
         sv = (ScrollView) findViewById(R.id.sv);
 
-        btnAdd.setOnClickListener(this);
         btnTodo.setOnClickListener(this);
         btnAlarm.setOnClickListener(this);
         btnWeather.setOnClickListener(this);
@@ -35,10 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Intent myIntent;
         switch (view.getId()) {
-            case R.id.btnAdd:
-                myIntent = new Intent(MainActivity.this, PopActivity.class);
-                startActivity(myIntent);
-                break;
             case R.id.btnTodo:
                 myIntent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(myIntent);
