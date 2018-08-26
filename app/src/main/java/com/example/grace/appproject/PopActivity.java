@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -20,6 +21,7 @@ import java.util.Calendar;
 public class PopActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnEnter, btnCancel, timebtn, datebtn;
+    private EditText title, location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
         btnEnter = (Button) findViewById(R.id.btnEnter);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnCancel.setPaintFlags(btnCancel.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        title = (EditText) findViewById(R.id.title);
+        location = (EditText) findViewById(R.id.location);
 
     }
 
@@ -57,7 +61,7 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.btnEnter:
                 myIntent = new Intent();
-                //myIntent.putExtra("result",result);
+                myIntent.putExtra("result",title.getText().toString());
                 setResult(Activity.RESULT_OK,myIntent);
                 finish();
                 break;

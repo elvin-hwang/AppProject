@@ -3,16 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ccffff">
+    android:background="@drawable/gradient">
 
 
     <EditText
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Your Task" />
+        android:hint="Your Task"
+        android:text=""/>
+
+    <EditText
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/roboto_light"
+        android:hint="Location"
+        android:text=""
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/tvDate"
@@ -21,6 +33,8 @@
         android:ems="10"
         android:inputType="date"
         android:hint="Date: month/day/year"
+        android:text=""
+        android:fontFamily="@font/roboto_light"
         android:gravity="center_vertical"/>
 
     <Button
@@ -29,37 +43,101 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center_vertical"
+        android:fontFamily="@font/roboto_light"
         android:hint="Set Time"
+        android:text=""
         android:inputType="time" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="10dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/roboto_light"
-        android:onClick="onClick"
-        android:text="cancel"
-        android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/btnEnter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="10dp"
-        android:background="#4169"
-        android:fontFamily="@font/roboto_light"
-        android:onClick="onClick"
-        android:text="Add"
-        android:textAllCaps="false" />
+        <TextView
+            android:id="@+id/priorityText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/roboto_light"
+            android:text="Priority"
+            android:textAlignment="viewStart"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:text="Off"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:text="!"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:text="! !"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="! ! !"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/roboto_light"
+            android:onClick="onClick"
+            android:text="cancel"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="#4169"
+            android:fontFamily="@font/roboto_light"
+            android:onClick="onClick"
+            android:text="Add"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
 
 </LinearLayout>

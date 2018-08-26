@@ -75,14 +75,14 @@
             android:textColor="#1e053c" />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/sv"
+    <ListView
+        android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
         android:background="#c9b8d1">
 
-    </ScrollView>
+    </ListView>
 
     <Button
         android:id="@+id/btnAdd"
