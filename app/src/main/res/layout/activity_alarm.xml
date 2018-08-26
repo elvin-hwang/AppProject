@@ -4,12 +4,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relativelayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3.5"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop">
+
+        <ImageView
+            android:id="@+id/background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background" />
+
+        <TextClock
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_light"
+            android:textSize="30dp"
+            android:textColor="#ffffff" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,10 +43,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="@android:color/darker_gray"
             android:fontFamily="@font/roboto_light"
-            android:onClick="onClick"
-            android:text="alarm"
+            android:gravity="center"
+            android:text="Alarm"
             android:textAllCaps="false"
             android:textColor="#1e053c" />
 
@@ -37,7 +58,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/roboto_light"
             android:onClick="onClick"
-            android:text="to-do"
+            android:text="To-Do"
             android:textAllCaps="false"
             android:textColor="#1e053c" />
 
@@ -49,7 +70,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/roboto_light"
             android:onClick="onClick"
-            android:text="weather"
+            android:text="Weather"
             android:textAllCaps="false"
             android:textColor="#1e053c" />
     </LinearLayout>

@@ -9,7 +9,7 @@ import android.widget.ScrollView;
 
 public class WeatherActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button btnAlarm, btnTodo, btnWeather;
+    private Button btnAlarm, btnTodo;
     private ScrollView sv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +21,10 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private void init() {
         btnAlarm = (Button) findViewById(R.id.btnAlarm);
         btnTodo = (Button) findViewById(R.id.btnTodo);
-        btnWeather = (Button) findViewById(R.id.btnWeather);
         sv = (ScrollView) findViewById(R.id.sv);
 
         btnTodo.setOnClickListener(this);
         btnAlarm.setOnClickListener(this);
-        btnWeather.setOnClickListener(this);
     }
 
     @Override
@@ -35,10 +33,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.btnTodo:
                 myIntent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(myIntent);
-                break;
-            case R.id.btnWeather:
-                myIntent = new Intent(view.getContext(), WeatherActivity.class);
                 startActivity(myIntent);
                 break;
             case R.id.btnAlarm:

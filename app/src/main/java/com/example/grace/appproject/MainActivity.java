@@ -9,7 +9,7 @@ import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnAlarm, btnTodo, btnWeather, btnAdd;
+    private Button btnAlarm, btnWeather, btnAdd;
     private ScrollView sv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +20,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init() {
         btnAlarm = (Button) findViewById(R.id.btnAlarm);
-        btnTodo = (Button) findViewById(R.id.btnTodo);
         btnWeather = (Button) findViewById(R.id.btnWeather);
         btnAdd = (Button) findViewById(R.id.btnAdd);
         sv = (ScrollView) findViewById(R.id.sv);
 
         btnAdd.setOnClickListener(this);
-        btnTodo.setOnClickListener(this);
         btnAlarm.setOnClickListener(this);
         btnWeather.setOnClickListener(this);
     }
@@ -37,11 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btnAdd:
                 myIntent = new Intent(MainActivity.this, PopActivity.class);
-                startActivity(myIntent);
-                break;
-            case R.id.btnTodo:
-                myIntent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(myIntent);
+                startActivityForResult(myIntent,1);
                 break;
             case R.id.btnWeather:
                 myIntent = new Intent(view.getContext(), WeatherActivity.class);
