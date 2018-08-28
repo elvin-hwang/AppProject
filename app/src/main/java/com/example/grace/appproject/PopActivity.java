@@ -61,7 +61,8 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.btnEnter:
                 myIntent = new Intent();
-                myIntent.putExtra("result",title.getText().toString());
+                myIntent.putExtra("result",new String[] {title.getText().toString(), location.getText().toString(),
+                                                                datebtn.getText().toString(), timebtn.getText().toString()}); // need to put priority
                 setResult(Activity.RESULT_OK,myIntent);
                 finish();
                 break;

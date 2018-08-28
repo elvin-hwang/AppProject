@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,10 +15,14 @@ import java.util.ArrayList;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME="EHDev";
-    private static final int DB_VER = 1;
-    public static final String DB_TABLE="Task";
-    public static final String DB_COLUMN = "TaskName";
+    private static final String DB_NAME ="EHDev";
+    private static final int DB_VER = 4;
+    public static final String DB_TABLE= "Tasks";
+    public static final String DB_COLUMN1 = "Task";
+    public static final String DB_COLUMN2 = "Location";
+    public static final String DB_COLUMN3 = "Date";
+    public static final String DB_COLUMN4 = "Time";
+
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VER);
@@ -25,40 +30,52 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT NOT NULL);",DB_TABLE,DB_COLUMN);
+        String query = String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT, %s TEXT, %s TEXT, %s TEXT);",DB_TABLE,DB_COLUMN1, DB_COLUMN2, DB_COLUMN3, DB_COLUMN4);
         db.execSQL(query);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String query = String.format("DELETE TABLE IF EXISTS %s",DB_TABLE);
+        String query = String.format("DROP TABLE IF EXISTS %s", DB_TABLE);
         db.execSQL(query);
         onCreate(db);
+    }
+
+    // TODO maybe remove after project
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 
-    public void insertNewTask(String task){
+    public void insertNewTask(String title, String location, String date, String time){
         SQLiteDatabase db= this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DB_COLUMN,task);
+        values.put(DB_COLUMN1, title);
+        values.put(DB_COLUMN2, location);
+        values.put(DB_COLUMN3, date);
+        values.put(DB_COLUMN4, time);
         db.insertWithOnConflict(DB_TABLE,null,values,SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
 
     public void deleteTask(String task){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(DB_TABLE,DB_COLUMN + " = ?",new String[]{task});
+        db.delete(DB_TABLE,DB_COLUMN1 + " = ?",new String[]{task});
+        //db.delete(DB_TABLE,DB_COLUMN2 + " = ?",new String[]{task}); // TODO must change blasdfasdkjfdnkfs
         db.close();
     }
 
-    public ArrayList<String> getTaskList(){
-        ArrayList<String> taskList = new ArrayList<>();
+    public ArrayList<Task> getTaskList(){
+        ArrayList<Task> taskList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(DB_TABLE,new String[]{DB_COLUMN},null,null,null,null,null);
+        Cursor cursor = db.query(DB_TABLE,new String[]{DB_COLUMN1, DB_COLUMN2, DB_COLUMN3, DB_COLUMN4},null,null,null,null,null);
         while(cursor.moveToNext()){
-            int index = cursor.getColumnIndex(DB_COLUMN);
-            taskList.add(cursor.getString(index));
+            Task t = new Task(cursor.getString(cursor.getColumnIndex(DB_COLUMN1)),
+                    cursor.getString(cursor.getColumnIndex(DB_COLUMN2)),
+                    cursor.getString(cursor.getColumnIndex(DB_COLUMN3)),
+                    cursor.getString(cursor.getColumnIndex(DB_COLUMN4)));
+            taskList.add(t);
         }
         cursor.close();
         db.close();

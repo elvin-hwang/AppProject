@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnAlarm, btnWeather, btnAdd;
     private ListView lv;
     DbHelper dbHelper;
-    ArrayAdapter<String> mAdapter;
+    TaskAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadTaskList() {
-        ArrayList<String> taskList = dbHelper.getTaskList();
+        ArrayList<Task> taskList = dbHelper.getTaskList();
         if(mAdapter==null){
-            mAdapter = new ArrayAdapter<String>(this,R.layout.row,R.id.task_title,taskList);
+            mAdapter = new TaskAdapter(MainActivity.this,R.layout.row, taskList);
             lv.setAdapter(mAdapter);
         }
         else{
@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(requestCode) {
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    String task = data.getStringExtra("result");
-                    dbHelper.insertNewTask(task);
+                    String[] task = data.getStringArrayExtra("result");
+                    dbHelper.insertNewTask(task[0], task[1], task[2], task[3]);
                     loadTaskList();
                 }
                 break;
