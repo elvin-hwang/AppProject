@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_light"
             android:text="Off"
+            android:onClick="checkPriority"
             android:textSize="18sp" />
 
         <RadioButton
@@ -81,6 +82,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_light"
             android:text="!"
+            android:onClick="checkPriority"
             android:textColor="@android:color/holo_green_dark"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -91,6 +93,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_light"
             android:text="! !"
+            android:onClick="checkPriority"
             android:textColor="@android:color/holo_orange_dark"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -102,6 +105,7 @@
             android:layout_marginRight="10dp"
             android:fontFamily="@font/roboto_light"
             android:text="! ! !"
+            android:onClick="checkPriority"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="18sp"
             android:textStyle="bold" />

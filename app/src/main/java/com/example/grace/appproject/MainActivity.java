@@ -1,6 +1,8 @@
 package com.example.grace.appproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
                     String[] task = data.getStringArrayExtra("result");
-                    dbHelper.insertNewTask(task[0], task[1], task[2], task[3]);
+                    dbHelper.insertNewTask(task[0], task[1], task[2], task[3], task[4]);
                     loadTaskList();
                 }
                 break;
@@ -90,7 +94,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
+    public void exitDialog(View view) {
+        final View v = view;
+        CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
+        checkBox.setChecked(false);
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                //set icon
+                .setIcon(R.drawable.checkmark)
+                //set title
+                .setTitle("You Completed a Task!")
+                //set message
+                .setMessage("Would you like to remove this task?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteTask(v);
+                    }
+                })
+                //set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                })
+                .show();
+    }
 
     public void deleteTask(View view){
         View parent = (View)view.getParent();

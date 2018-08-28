@@ -2,10 +2,13 @@ package com.example.grace.appproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.grace.appproject.R;
@@ -43,6 +46,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             holder.textLocation = (TextView)row.findViewById(R.id.task_location);
             holder.textDate = (TextView)row.findViewById(R.id.task_date);
             holder.textTime = (TextView)row.findViewById(R.id.task_time);
+            holder.priority = (TextView) row.findViewById(R.id.priority);
 
             row.setTag(holder);
 
@@ -56,6 +60,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         holder.textLocation.setText(task.getLocation());
         holder.textDate.setText(task.getDate());
         holder.textTime.setText(task.getTime());
+        setPriority(holder, task.getPriority());
 
         return row;
     }
@@ -66,5 +71,23 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         TextView textLocation;
         TextView textDate;
         TextView textTime;
+        TextView priority;
+    }
+
+    private void setPriority(ViewHolder holder, String s) {
+        switch (s) {
+            case "low":
+                holder.priority.setText("!");
+                holder.priority.setTextColor(Color.parseColor("#006400"));
+                break;
+            case "med":
+                holder.priority.setText("! !");
+                holder.priority.setTextColor(Color.parseColor("#FF8C00"));
+                break;
+            case "high":
+                holder.priority.setText("! ! !");
+                holder.priority.setTextColor(Color.parseColor("#FF0000"));
+                break;
+        }
     }
 }

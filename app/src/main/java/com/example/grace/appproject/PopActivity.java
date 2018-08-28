@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -22,6 +23,7 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
 
     private Button btnEnter, btnCancel, timebtn, datebtn;
     private EditText title, location;
+    private RadioButton off, low, med, high;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,10 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     private void init() {
+        off = (RadioButton) findViewById(R.id.off);
+        low = (RadioButton) findViewById(R.id.low);
+        med = (RadioButton) findViewById(R.id.medium);
+        high = (RadioButton) findViewById(R.id.high);
         timebtn = (Button) findViewById(R.id.tvTime);
         datebtn = (Button) findViewById(R.id.tvDate);
         btnEnter = (Button) findViewById(R.id.btnEnter);
@@ -60,9 +66,11 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
         Intent myIntent;
         switch (view.getId()) {
             case R.id.btnEnter:
+                String state = getPriority();
                 myIntent = new Intent();
                 myIntent.putExtra("result",new String[] {title.getText().toString(), location.getText().toString(),
-                                                                datebtn.getText().toString(), timebtn.getText().toString()}); // need to put priority
+                                                                datebtn.getText().toString(), timebtn.getText().toString(),
+                                                                state});
                 setResult(Activity.RESULT_OK,myIntent);
                 finish();
                 break;
@@ -137,6 +145,36 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
                 mTimePicker.show();
             }
         });
+    }
+
+    public void checkPriority(View view) {
+
+        off.setChecked(false);
+        low.setChecked(false);
+        med.setChecked(false);
+        high.setChecked(false);
+
+        switch (view.getId()) {
+            case R.id.off:
+                off.setChecked(true);
+                break;
+            case R.id.low:
+                low.setChecked(true);
+                break;
+            case R.id.medium:
+                med.setChecked(true);
+                break;
+            case R.id.high:
+                high.setChecked(true);
+                break;
+        }
+    }
+
+    private String getPriority() {
+        if (low.isChecked()) return "low";
+        if (med.isChecked()) return "med";
+        if (high.isChecked()) return "high";
+        return "off";
     }
 }
 

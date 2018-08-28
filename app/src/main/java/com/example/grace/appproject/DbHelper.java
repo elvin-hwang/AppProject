@@ -16,12 +16,13 @@ import java.util.ArrayList;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME ="EHDev";
-    private static final int DB_VER = 4;
+    private static final int DB_VER = 5;
     public static final String DB_TABLE= "Tasks";
     public static final String DB_COLUMN1 = "Task";
     public static final String DB_COLUMN2 = "Location";
     public static final String DB_COLUMN3 = "Date";
     public static final String DB_COLUMN4 = "Time";
+    public static final String DB_COLUMN5 = "Priority";
 
 
     public DbHelper(Context context) {
@@ -30,7 +31,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT, %s TEXT, %s TEXT, %s TEXT);",DB_TABLE,DB_COLUMN1, DB_COLUMN2, DB_COLUMN3, DB_COLUMN4);
+        String query = String.format("CREATE TABLE %s (ID INTEGER PRIMARY KEY AUTOINCREMENT,%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
+                                    DB_TABLE,DB_COLUMN1, DB_COLUMN2, DB_COLUMN3, DB_COLUMN4, DB_COLUMN5);
         db.execSQL(query);
 
     }
@@ -48,33 +50,35 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertNewTask(String title, String location, String date, String time){
+    public void insertNewTask(String title, String location, String date, String time, String priority){
         SQLiteDatabase db= this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DB_COLUMN1, title);
         values.put(DB_COLUMN2, location);
         values.put(DB_COLUMN3, date);
         values.put(DB_COLUMN4, time);
+        values.put(DB_COLUMN5, priority);
         db.insertWithOnConflict(DB_TABLE,null,values,SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
 
+    // TODO - must fix: tasks with same title are all deleted together
     public void deleteTask(String task){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(DB_TABLE,DB_COLUMN1 + " = ?",new String[]{task});
-        //db.delete(DB_TABLE,DB_COLUMN2 + " = ?",new String[]{task}); // TODO must change blasdfasdkjfdnkfs
         db.close();
     }
 
     public ArrayList<Task> getTaskList(){
         ArrayList<Task> taskList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(DB_TABLE,new String[]{DB_COLUMN1, DB_COLUMN2, DB_COLUMN3, DB_COLUMN4},null,null,null,null,null);
+        Cursor cursor = db.query(DB_TABLE,new String[]{DB_COLUMN1, DB_COLUMN2, DB_COLUMN3, DB_COLUMN4, DB_COLUMN5},null,null,null,null,null);
         while(cursor.moveToNext()){
             Task t = new Task(cursor.getString(cursor.getColumnIndex(DB_COLUMN1)),
                     cursor.getString(cursor.getColumnIndex(DB_COLUMN2)),
                     cursor.getString(cursor.getColumnIndex(DB_COLUMN3)),
-                    cursor.getString(cursor.getColumnIndex(DB_COLUMN4)));
+                    cursor.getString(cursor.getColumnIndex(DB_COLUMN4)),
+                    cursor.getString(cursor.getColumnIndex(DB_COLUMN5)));
             taskList.add(t);
         }
         cursor.close();

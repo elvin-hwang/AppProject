@@ -9,12 +9,14 @@ public class Task {
     String location;
     String date;
     String time;
+    String priority;
 
-    public Task(String t, String l, String d, String ti) {
+    public Task(String t, String l, String d, String ti, String p) {
         title = t;
         location = l;
         date = d;
         time = ti;
+        priority = p;
     }
 
     public String getTitle() {
@@ -31,6 +33,10 @@ public class Task {
 
     public String getTime() {
         return time;
+    }
+
+    public String getPriority() {
+        return priority;
     }
 
 }
