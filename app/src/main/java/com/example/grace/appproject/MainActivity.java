@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 //set icon
                 .setIcon(R.drawable.checkmark)
+
                 //set title
                 .setTitle("You Completed a Task!")
                 //set message
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialogInterface, int i) {}
                 })
                 .show();
+        alertDialog.getWindow().getDecorView().getBackground().setColorFilter(new LightingColorFilter(0xFF000000, 0xffc9b8d1));
     }
 
     public void deleteTask(View view){

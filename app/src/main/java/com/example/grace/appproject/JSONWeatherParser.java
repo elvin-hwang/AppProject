@@ -1,7 +1,9 @@
 package com.example.grace.appproject;
 
+import com.example.grace.appproject.model.DayForecast;
 import com.example.grace.appproject.model.Location;
 import com.example.grace.appproject.model.Weather;
+import com.example.grace.appproject.model.WeatherForecast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,9 +15,9 @@ import org.json.JSONObject;
 
 public class JSONWeatherParser {
 
-    public static Weather getWeather(String data) throws JSONException {
+    public static Weather getWeather(String data) throws JSONException  {
         Weather weather = new Weather();
-
+        System.out.println("Data ["+data+"]");
         // We create out JSONObject from the data
         JSONObject jObj = new JSONObject(data);
 
@@ -63,6 +65,55 @@ public class JSONWeatherParser {
 
 
         return weather;
+    }
+
+    public static WeatherForecast getForecastWeather(String data) throws JSONException  {
+
+        WeatherForecast forecast = new WeatherForecast();
+
+        // We create out JSONObject from the data
+        JSONObject jObj = new JSONObject(data);
+
+        JSONArray jArr = jObj.getJSONArray("list"); // Here we have the forecast for every day
+
+        // We traverse all the array and parse the data
+        for (int i=0; i < jArr.length(); i++) {
+            JSONObject jDayForecast = jArr.getJSONObject(i);
+
+            // Now we have the json object so we can extract the data
+            DayForecast df = new DayForecast();
+
+            // We retrieve the timestamp (dt)
+            df.timestamp = jDayForecast.getLong("dt");
+
+            // Temp is an object
+            JSONObject jTempObj = jDayForecast.getJSONObject("temp");
+
+            df.forecastTemp.day = (float) jTempObj.getDouble("day");
+            df.forecastTemp.min = (float) jTempObj.getDouble("min");
+            df.forecastTemp.max = (float) jTempObj.getDouble("max");
+            df.forecastTemp.night = (float) jTempObj.getDouble("night");
+            df.forecastTemp.eve = (float) jTempObj.getDouble("eve");
+            df.forecastTemp.morning = (float) jTempObj.getDouble("morn");
+
+            // Pressure & Humidity
+            df.weather.currentCondition.setPressure((float) jDayForecast.getDouble("pressure"));
+            df.weather.currentCondition.setHumidity((float) jDayForecast.getDouble("humidity"));
+
+            // ...and now the weather
+            JSONArray jWeatherArr = jDayForecast.getJSONArray("weather");
+            JSONObject jWeatherObj = jWeatherArr.getJSONObject(0);
+            df.weather.currentCondition.setWeatherId(getInt("id", jWeatherObj));
+            df.weather.currentCondition.setDescr(getString("description", jWeatherObj));
+            df.weather.currentCondition.setCondition(getString("main", jWeatherObj));
+            df.weather.currentCondition.setIcon(getString("icon", jWeatherObj));
+
+            forecast.addForecast(df);
+        }
+
+
+
+        return forecast;
     }
 
 

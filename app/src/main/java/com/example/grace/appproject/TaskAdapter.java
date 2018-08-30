@@ -64,11 +64,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
     static class ViewHolder
     {
-        TextView textTitle;
-        TextView textLocation;
-        TextView textDate;
-        TextView textTime;
-        TextView priority;
+        TextView textTitle, textLocation, textDate, textTime, priority;
     }
 
     private void setPriority(ViewHolder holder, String s) {
