@@ -7,14 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.grace.appproject.R;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by hosun on 2018-08-27.
@@ -86,7 +83,10 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 break;
             case "high":
                 holder.priority.setText("! ! !");
-                holder.priority.setTextColor(Color.parseColor("#FF0000"));
+                holder.priority.setTextColor(Color.parseColor("#800000"));
+                break;
+            default:
+                holder.priority.setText("");
                 break;
         }
     }

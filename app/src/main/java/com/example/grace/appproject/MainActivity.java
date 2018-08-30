@@ -6,18 +6,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Spannable;
-import android.text.SpannableString;
+
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -70,10 +70,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<Task> taskList = dbHelper.getTaskList();
         if(mAdapter==null){
             mAdapter = new TaskAdapter(MainActivity.this,R.layout.row, taskList);
+            mAdapter.sort(new Comparator<Task>() {
+                @Override
+                public int compare(Task task, Task t1) {
+                    return task.compareTo(t1);
+                }
+            });
             lv.setAdapter(mAdapter);
+            Collections.sort(taskList);
+            mAdapter.notifyDataSetChanged();
         }
         else{
             mAdapter.clear();
+            Collections.sort(taskList);
             mAdapter.addAll(taskList);
             mAdapter.notifyDataSetChanged();
         }

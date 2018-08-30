@@ -1,6 +1,7 @@
 package com.example.grace.appproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -93,7 +94,7 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
                 int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
                 // date picker dialog
                 DatePickerDialog datePickerDialog;
-                datePickerDialog = new DatePickerDialog(PopActivity.this,android.R.style.Theme_Holo_Dialog,
+                datePickerDialog = new DatePickerDialog(PopActivity.this, AlertDialog.THEME_HOLO_LIGHT,
                         new DatePickerDialog.OnDateSetListener() {
 
                             @Override
@@ -118,7 +119,7 @@ public class PopActivity extends AppCompatActivity implements View.OnClickListen
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(PopActivity.this, android.R.style.Theme_Holo_Dialog,
+                mTimePicker = new TimePickerDialog(PopActivity.this, AlertDialog.THEME_HOLO_LIGHT,
                         new TimePickerDialog.OnTimeSetListener() {
                     String format;
                     @Override
