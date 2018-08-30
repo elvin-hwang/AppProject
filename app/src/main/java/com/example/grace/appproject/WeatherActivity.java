@@ -5,12 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
+import android.widget.ListView;
 
 public class WeatherActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnAlarm, btnTodo;
-    private ScrollView sv;
+    private ListView lv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +21,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private void init() {
         btnAlarm = (Button) findViewById(R.id.btnAlarm);
         btnTodo = (Button) findViewById(R.id.btnTodo);
-        sv = (ScrollView) findViewById(R.id.sv);
+        lv = (ListView) findViewById(R.id.sv);
 
         btnTodo.setOnClickListener(this);
         btnAlarm.setOnClickListener(this);
