@@ -1,6 +1,4 @@
-package com.example.grace.appproject;
-
-import com.example.grace.appproject.Location;
+package com.example.grace.appproject.model;
 
 /**
  * Created by hosun on 2018-08-30.
@@ -128,7 +126,6 @@ public class Weather {
         public void setAmmount(float ammount) {
             this.ammount = ammount;
         }
-
 
 
     }

@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class WeatherActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -21,7 +24,12 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private void init() {
         btnAlarm = (Button) findViewById(R.id.btnAlarm);
         btnTodo = (Button) findViewById(R.id.btnTodo);
-        lv = (ListView) findViewById(R.id.sv);
+        lv = (ListView) findViewById(R.id.lv);
+        ArrayAdapter<String> mAdapter;
+        ArrayList<String> add = new ArrayList<>();
+        add.add("abc");
+        mAdapter = new ArrayAdapter<String>(this, R.layout.weather_content, R.id.example, add);
+        lv.setAdapter(mAdapter);
 
         btnTodo.setOnClickListener(this);
         btnAlarm.setOnClickListener(this);

@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".WeatherActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".model.AlarmActivity"
+        <activity android:name=".AlarmActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".PopActivity"
             android:theme="@style/AppTheme.CustomTheme"></activity>

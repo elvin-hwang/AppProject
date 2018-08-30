@@ -19,7 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final int DB_VER = 5;
     public static final String DB_TABLE= "Tasks";
     public static final String DB_COLUMN1 = "Task";
-    public static final String DB_COLUMN2 = "com.example.grace.appproject.Location";
+    public static final String DB_COLUMN2 = "Location";
     public static final String DB_COLUMN3 = "Date";
     public static final String DB_COLUMN4 = "Time";
     public static final String DB_COLUMN5 = "Priority";

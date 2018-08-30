@@ -1,4 +1,4 @@
-package com.example.grace.appproject;
+package com.example.grace.appproject.model;
 
 import java.io.Serializable;
 
