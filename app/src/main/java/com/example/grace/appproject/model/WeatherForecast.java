@@ -15,7 +15,6 @@ public class WeatherForecast {
 
     public void addForecast(DayForecast forecast) {
         daysForecast.add(forecast);
-        System.out.println("Add forecast ["+forecast+"]");
     }
 
     public DayForecast getForecast(int dayNum) {

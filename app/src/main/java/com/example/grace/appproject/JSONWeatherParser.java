@@ -110,9 +110,7 @@ public class JSONWeatherParser {
 
             if (nineAM) {
                 // Initialize DayForecast
-                df = new DayForecast();
                 df.timestamp = parseDate;
-                forecast.addForecast(df);
 
                 // Temp is an object
                 JSONObject jTempObj = jDayForecast.getJSONObject("main");
@@ -131,7 +129,6 @@ public class JSONWeatherParser {
             }
 
             if (threePM) {
-                df.timestamp = jDayForecast.getLong("dt");
                 JSONObject jTempObj = jDayForecast.getJSONObject("main");
 
                 df.forecastTemp.minAfternoon = (float) jTempObj.getDouble("temp_min");
@@ -145,7 +142,6 @@ public class JSONWeatherParser {
                 df.weather.currentCondition.setAftIcon(getString("icon", jWeatherObj));
             }
             if (ninePM) {
-                df.timestamp = jDayForecast.getLong("dt");
                 JSONObject jTempObj = jDayForecast.getJSONObject("main");
 
                 df.forecastTemp.minAfternoon = (float) jTempObj.getDouble("temp_min");
@@ -157,6 +153,9 @@ public class JSONWeatherParser {
                 JSONObject jWeatherObj = jWeatherArr.getJSONObject(0);
                 df.weather.currentCondition.setEvenDescr(getString("description", jWeatherObj));
                 df.weather.currentCondition.setEvenIcon(getString("icon", jWeatherObj));
+
+                forecast.addForecast(df);
+                df = new DayForecast();
             }
         }
 
