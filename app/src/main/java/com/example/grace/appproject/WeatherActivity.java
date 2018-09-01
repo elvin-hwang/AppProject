@@ -173,15 +173,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void loadTaskList(ArrayList<DayForecast> forecasts) {
-        if(mAdapter==null){
-            mAdapter = new WeatherAdapter(WeatherActivity.this,R.layout.weather_content, forecasts);
-            lv.setAdapter(mAdapter);
-        }
-        else{
-            mAdapter.clear();
-            mAdapter.addAll(forecasts);
-            mAdapter.notifyDataSetChanged();
-        }
+        mAdapter = new WeatherAdapter(WeatherActivity.this,R.layout.weather_content, forecasts);
+        lv.setAdapter(mAdapter);
     }
 
 

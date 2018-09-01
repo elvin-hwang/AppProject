@@ -68,15 +68,6 @@
                 android:fontFamily="@font/roboto_light"
                 android:layout_weight="0.5"
                 android:hint="22°C" />
-            <TextView
-                android:id="@+id/mornMin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:gravity="center"
-                android:fontFamily="@font/roboto_light"
-                android:textSize="16sp"
-                android:hint="19°C" />
 
             <TextView
                 android:id="@+id/mornHumid"
@@ -139,15 +130,6 @@
                 android:fontFamily="@font/roboto_light"
                 android:layout_weight="0.5"
                 android:hint="22°C" />
-            <TextView
-                android:id="@+id/aftMin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:fontFamily="@font/roboto_light"
-                android:hint="19°C" />
 
             <TextView
                 android:id="@+id/aftHumid"
@@ -209,15 +191,6 @@
                 android:fontFamily="@font/roboto_light"
                 android:layout_weight="0.5"
                 android:hint="22°C" />
-            <TextView
-                android:id="@+id/evenMin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:fontFamily="@font/roboto_light"
-                android:hint="19°C" />
 
             <TextView
                 android:id="@+id/evenHumid"

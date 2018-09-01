@@ -144,8 +144,8 @@ public class JSONWeatherParser {
             if (ninePM) {
                 JSONObject jTempObj = jDayForecast.getJSONObject("main");
 
-                df.forecastTemp.minAfternoon = (float) jTempObj.getDouble("temp_min");
-                df.forecastTemp.maxAfternoon = (float) jTempObj.getDouble("temp_max");
+                df.forecastTemp.minEvening = (float) jTempObj.getDouble("temp_min");
+                df.forecastTemp.maxEvening = (float) jTempObj.getDouble("temp_max");
 
                 df.weather.currentCondition.setEvenHumidity((float) jTempObj.getDouble("humidity"));
 
