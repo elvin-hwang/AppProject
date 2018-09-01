@@ -22,9 +22,20 @@ public class Weather {
         private String descr;
         private String icon;
 
+        private String mornDescr;
+        private String mornIcon;
+        private String aftDescr;
+        private String aftIcon;
+        private String evenDescr;
+        private String evenIcon;
+
 
         private float pressure;
         private float humidity;
+
+        private float mornHumidity;
+        private float aftHumidity;
+        private float evenHumidity;
 
         public int getWeatherId() {
             return weatherId;
@@ -63,6 +74,64 @@ public class Weather {
             this.humidity = humidity;
         }
 
+
+        public float getMornHumidity() {
+            return mornHumidity;
+        }
+        public float getAftHumidity() {
+            return aftHumidity;
+        }
+        public float getEvenHumidity() {
+            return evenHumidity;
+        }
+        public void setMornHumidity(float humidity) {
+            this.mornHumidity = humidity;
+        }
+        public void setAftHumidity(float humidity) {
+            this.aftHumidity = humidity;
+        }
+        public void setEvenHumidity(float humidity) {
+            this.evenHumidity = humidity;
+        }
+
+        public String getMornDescr() {
+            return mornDescr;
+        }
+        public void setMornDescr(String descr) {
+            this.mornDescr = descr;
+        }
+        public String getMornIcon() {
+            return mornIcon;
+        }
+        public void setMornIcon(String icon) {
+            this.mornIcon = icon;
+        }
+
+        public String getAftDescr() {
+            return aftDescr;
+        }
+        public void setAftDescr(String descr) {
+            this.aftDescr = descr;
+        }
+        public String getAftIcon() {
+            return aftIcon;
+        }
+        public void setAftIcon(String icon) {
+            this.aftIcon = icon;
+        }
+
+        public String getEvenDescr() {
+            return evenDescr;
+        }
+        public void setEvenDescr(String descr) {
+            this.evenDescr = descr;
+        }
+        public String getEvenIcon() {
+            return evenIcon;
+        }
+        public void setEvenIcon(String icon) {
+            this.evenIcon = icon;
+        }
 
     }
 

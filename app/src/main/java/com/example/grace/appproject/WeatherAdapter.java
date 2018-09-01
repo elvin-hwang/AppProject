@@ -2,6 +2,9 @@ package com.example.grace.appproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.grace.appproject.model.DayForecast;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,23 +48,17 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast> {
             holder.mornName = (TextView) row.findViewById(R.id.mornName);
             holder.mornMax = (TextView) row.findViewById(R.id.mornMax);
             holder.mornMin = (TextView) row.findViewById(R.id.mornMin);
-            holder.mornPrecip = (TextView) row.findViewById(R.id.mornPrecip);
-            holder.mornIcon = (ImageView) row.findViewById(R.id.mornIcon);
-
+            holder.mornHumid = (TextView) row.findViewById(R.id.mornHumid);
 
             holder.aftName = (TextView) row.findViewById(R.id.aftName);
             holder.aftMax = (TextView) row.findViewById(R.id.aftMax);
             holder.aftMin = (TextView) row.findViewById(R.id.aftMin);
-            holder.aftPrecip = (TextView) row.findViewById(R.id.aftPrecip);
-            holder.aftIcon = (ImageView) row.findViewById(R.id.aftIcon);
+            holder.aftHumid = (TextView) row.findViewById(R.id.aftHumid);
 
             holder.evenName = (TextView) row.findViewById(R.id.evenName);
             holder.evenMax = (TextView) row.findViewById(R.id.evenMax);
             holder.evenMin = (TextView) row.findViewById(R.id.evenMin);
-            holder.evenPrecip = (TextView) row.findViewById(R.id.evenPrecip);
-            holder.evenIcon = (ImageView) row.findViewById(R.id.evenIcon);
-
-
+            holder.evenHumid = (TextView) row.findViewById(R.id.evenHumid);
 
             row.setTag(holder);
 
@@ -68,21 +66,45 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast> {
             holder = (ViewHolder)row.getTag();
         }
 
-        DayForecast weather = data.get(position);
+        DayForecast curr = data.get(position);
 
-//        holder.textTitle.setText(task.getTitle());
-//        holder.textLocation.setText(task.getLocation());
-//        holder.textDate.setText(task.getDate());
-//        holder.textTime.setText(task.getTime());
+        holder.dateText.setText(curr.getStringDate());
+        holder.mornName.setText(curr.weather.currentCondition.getMornDescr());
+        holder.mornMax.setText((int) (curr.forecastTemp.maxMorning - 275.15) + "°C");
+        holder.mornMin.setText((int) (curr.forecastTemp.minMorning - 275.15) + "°C");
+        holder.mornHumid.setText("%" + (int) curr.weather.currentCondition.getMornHumidity());
+        holder.mornIcon = (ImageView) row.findViewById(R.id.mornIcon);
+
+        holder.aftName.setText(curr.weather.currentCondition.getAftDescr());
+        holder.aftMax.setText((int) (curr.forecastTemp.maxAfternoon - 275.15) + "°C");
+        holder.aftMin.setText((int) (curr.forecastTemp.minAfternoon - 275.15) + "°C");
+        holder.aftHumid.setText("%" + (int) curr.weather.currentCondition.getAftHumidity());
+        holder.aftIcon = (ImageView) row.findViewById(R.id.aftIcon);
+
+        holder.evenName.setText(curr.weather.currentCondition.getEvenDescr());
+        holder.evenMax.setText((int) (curr.forecastTemp.maxEvening - 275.15) + "°C");
+        holder.evenMin.setText((int) (curr.forecastTemp.minEvening - 275.15) + "°C");
+        holder.evenHumid.setText("%" + (int) curr.weather.currentCondition.getEvenHumidity());
+        holder.evenIcon = (ImageView) row.findViewById(R.id.evenIcon);
+
+
+        Picasso.with(context).load("http://openweathermap.org/img/w/"
+                + curr.weather.currentCondition.getMornIcon() + ".png")
+                .into(holder.mornIcon);
+        Picasso.with(context).load("http://openweathermap.org/img/w/"
+                + curr.weather.currentCondition.getAftIcon() + ".png")
+                .into(holder.aftIcon);
+        Picasso.with(context).load("http://openweathermap.org/img/w/"
+                + curr.weather.currentCondition.getEvenIcon() + ".png")
+                .into(holder.evenIcon);
 
         return row;
     }
 
     static class ViewHolder
     {
-        TextView dateText, mornName, mornMax, mornMin, mornPrecip,
-                aftName, aftMax, aftMin, aftPrecip, evenName, evenMax, evenMin, evenPrecip;
+        TextView dateText, mornName, mornMax, mornMin, mornHumid,
+                aftName, aftMax, aftMin, aftHumid, evenName, evenMax, evenMin, evenHumid;
         ImageView mornIcon, aftIcon, evenIcon;
     }
-
 }

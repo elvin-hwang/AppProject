@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -15,15 +13,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.grace.appproject.model.DayForecast;
+import com.example.grace.appproject.model.WeatherForecast;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
-// TODO fix location provider
 public class WeatherActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
     private Button btnAlarm, btnTodo;
@@ -84,7 +83,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             lat = 49.2796;
             lng = 122.7985;
 
-            // TODO should call parse with this location.
+            JSONForecastWeatherTask task1 = new JSONForecastWeatherTask();
+            task1.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});
         }
     }
 
@@ -143,20 +143,17 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
-
+*/
 
     private class JSONForecastWeatherTask extends AsyncTask<String, Void, WeatherForecast> {
 
         @Override
         protected WeatherForecast doInBackground(String... params) {
 
-            String data = ((new WeatherHttpClient()).getForecastWeatherData(params[0], params[1], params[2]));
+            String data = ((new WeatherHttpClient()).getForecastWeatherData(params[0], params[1]));
             WeatherForecast forecast = new WeatherForecast();
             try {
                 forecast = JSONWeatherParser.getForecastWeather(data);
-                System.out.println("Weather [" + forecast + "]");
-                // Let's retrieve the icon
-                //weather.iconData = ( (new WeatherHttpClient()).getImage(weather.currentCondition.getIcon()));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -173,7 +170,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             loadTaskList(forecastWeather.getForecasts());
         }
     }
-    */
+
 
     private void loadTaskList(ArrayList<DayForecast> forecasts) {
         if(mAdapter==null){
@@ -196,10 +193,10 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
         //TODO
 //        JSONWeatherTask task = new JSONWeatherTask();
-//        task.execute(new String[]{city,lang});
-//
-//        JSONForecastWeatherTask task1 = new JSONForecastWeatherTask();
-//        task1.execute(new String[]{city,lang, forecastDaysNum});
+//        task.execute(new String[]{String.valueOf(lat),String.valueOf(lng)});
+
+        JSONForecastWeatherTask task1 = new JSONForecastWeatherTask();
+        task1.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});
     }
 
     @Override

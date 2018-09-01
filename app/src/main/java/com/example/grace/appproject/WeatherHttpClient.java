@@ -2,10 +2,12 @@ package com.example.grace.appproject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by hosun on 2018-08-30.
@@ -13,22 +15,21 @@ import java.net.URL;
 
 public class WeatherHttpClient {
 
-    private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+    private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?";
     private static String API_KEY = "&APPID=a65b6dcdd25a97b4d5ad3f56afe309a6";
     private static String IMG_URL = "http://openweathermap.org/img/w/";
 
 
-    private static String BASE_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&q=";
+    private static String BASE_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?";
 
 
-    public String getWeatherData(String location, String lang) {
+    public String getWeatherData(String latitude, String longitude) {
         HttpURLConnection con = null ;
         InputStream is = null;
 
         try {
-            String url = BASE_URL + location + API_KEY;
-            if (lang != null)
-                url = url + "&lang=" + lang;
+            String add = String.format("lat=%s&lon=%s%s",latitude,longitude, API_KEY);
+            String url = BASE_URL + add;
 
             con = (HttpURLConnection) ( new URL(url)).openConnection();
             con.setRequestMethod("GET");
@@ -62,19 +63,16 @@ public class WeatherHttpClient {
     }
 
 
-    public String getForecastWeatherData(String location, String lang, String sForecastDayNum) {
+    public String getForecastWeatherData(String latitude, String longitude) {
         HttpURLConnection con = null ;
         InputStream is = null;
-        int forecastDayNum = Integer.parseInt(sForecastDayNum);
 
         try {
 
             // Forecast
-            String url = BASE_FORECAST_URL + location;
-            if (lang != null)
-                url = url + "&lang=" + lang;
+            String add = String.format("lat=%s&lon=%s%s",latitude,longitude, API_KEY);
+            String url = BASE_FORECAST_URL + add;
 
-            url = url + "&cnt=" + forecastDayNum;
             con = (HttpURLConnection) ( new URL(url)).openConnection();
             con.setRequestMethod("GET");
             con.setDoInput(true);
@@ -92,7 +90,6 @@ public class WeatherHttpClient {
             is.close();
             con.disconnect();
 
-            System.out.println("Buffer ["+buffer1.toString()+"]");
             return buffer1.toString();
         }
         catch(Throwable t) {
@@ -107,36 +104,5 @@ public class WeatherHttpClient {
 
     }
 
-    public byte[] getImage(String code) {
-        HttpURLConnection con = null ;
-        InputStream is = null;
-        try {
-            con = (HttpURLConnection) ( new URL(IMG_URL + code)).openConnection();
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.connect();
-
-            // Let's read the response
-            is = con.getInputStream();
-            byte[] buffer = new byte[1024];
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            while ( is.read(buffer) != -1)
-                baos.write(buffer);
-
-            return baos.toByteArray();
-        }
-        catch(Throwable t) {
-            t.printStackTrace();
-        }
-        finally {
-            try { is.close(); } catch(Throwable t) {}
-            try { con.disconnect(); } catch(Throwable t) {}
-        }
-
-        return null;
-
-    }
 }
 

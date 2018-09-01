@@ -9,6 +9,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 /**
  * Created by hosun on 2018-08-30.
  */
@@ -69,46 +76,88 @@ public class JSONWeatherParser {
 
     public static WeatherForecast getForecastWeather(String data) throws JSONException  {
 
+        Calendar now = Calendar.getInstance();
+        DecimalFormat form = new DecimalFormat("00");
+        int d = now.get(Calendar.DAY_OF_MONTH);
+        String day = form.format(d);
+        String exit = form.format(d+5);
+
+        DayForecast df = new DayForecast();
         WeatherForecast forecast = new WeatherForecast();
 
         // We create out JSONObject from the data
         JSONObject jObj = new JSONObject(data);
 
         JSONArray jArr = jObj.getJSONArray("list"); // Here we have the forecast for every day
-
         // We traverse all the array and parse the data
         for (int i=0; i < jArr.length(); i++) {
             JSONObject jDayForecast = jArr.getJSONObject(i);
 
+            long parseDate = jDayForecast.getLong("dt")*1000;
+            SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.CANADA);
+            dayFormat.setTimeZone(TimeZone.getTimeZone("Canada, Vancouver"));
+            String date = dayFormat.format(new Date(parseDate));
+            if (day.equals(date)) continue;
+            if (date.equals(exit)) break;
+
             // Now we have the json object so we can extract the data
-            DayForecast df = new DayForecast();
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH", Locale.CANADA);
+            hourFormat.setTimeZone(TimeZone.getTimeZone("Canada, Vancouver"));
+            String hour = hourFormat.format(new Date(parseDate));
+            boolean nineAM = hour.equals("09");
+            boolean threePM = hour.equals("15");
+            boolean ninePM = hour.equals("21");
 
-            // We retrieve the timestamp (dt)
-            df.timestamp = jDayForecast.getLong("dt");
+            if (nineAM) {
+                // Initialize DayForecast
+                df = new DayForecast();
+                df.timestamp = parseDate;
+                forecast.addForecast(df);
 
-            // Temp is an object
-            JSONObject jTempObj = jDayForecast.getJSONObject("temp");
+                // Temp is an object
+                JSONObject jTempObj = jDayForecast.getJSONObject("main");
 
-            df.forecastTemp.day = (float) jTempObj.getDouble("day");
-            df.forecastTemp.min = (float) jTempObj.getDouble("min");
-            df.forecastTemp.max = (float) jTempObj.getDouble("max");
-            df.forecastTemp.night = (float) jTempObj.getDouble("night");
-            df.forecastTemp.eve = (float) jTempObj.getDouble("eve");
-            df.forecastTemp.morning = (float) jTempObj.getDouble("morn");
+                df.forecastTemp.minMorning = (float) jTempObj.getDouble("temp_min");
+                df.forecastTemp.maxMorning = (float) jTempObj.getDouble("temp_max");
 
-            // Pressure & Humidity
-            df.weather.currentCondition.setPressure((float) jDayForecast.getDouble("pressure"));
-            df.weather.currentCondition.setHumidity((float) jDayForecast.getDouble("humidity"));
+                // Humidity
+                df.weather.currentCondition.setMornHumidity((float) jTempObj.getDouble("humidity"));
 
-            // ...and now the weather
-            JSONArray jWeatherArr = jDayForecast.getJSONArray("weather");
-            JSONObject jWeatherObj = jWeatherArr.getJSONObject(0);
-            df.weather.currentCondition.setWeatherId(getInt("id", jWeatherObj));
-            df.weather.currentCondition.setDescr(getString("description", jWeatherObj));
-            df.weather.currentCondition.setCondition(getString("main", jWeatherObj));
-            df.weather.currentCondition.setIcon(getString("icon", jWeatherObj));
+                // ...and now the weather
+                JSONArray jWeatherArr = jDayForecast.getJSONArray("weather");
+                JSONObject jWeatherObj = jWeatherArr.getJSONObject(0);
+                df.weather.currentCondition.setMornDescr(getString("description", jWeatherObj));
+                df.weather.currentCondition.setMornIcon(getString("icon", jWeatherObj));
+            }
 
-            forecast.addForecast(df);
+            if (threePM) {
+                df.timestamp = jDayForecast.getLong("dt");
+                JSONObject jTempObj = jDayForecast.getJSONObject("main");
+
+                df.forecastTemp.minAfternoon = (float) jTempObj.getDouble("temp_min");
+                df.forecastTemp.maxAfternoon = (float) jTempObj.getDouble("temp_max");
+
+                df.weather.currentCondition.setAftHumidity((float) jTempObj.getDouble("humidity"));
+
+                JSONArray jWeatherArr = jDayForecast.getJSONArray("weather");
+                JSONObject jWeatherObj = jWeatherArr.getJSONObject(0);
+                df.weather.currentCondition.setAftDescr(getString("description", jWeatherObj));
+                df.weather.currentCondition.setAftIcon(getString("icon", jWeatherObj));
+            }
+            if (ninePM) {
+                df.timestamp = jDayForecast.getLong("dt");
+                JSONObject jTempObj = jDayForecast.getJSONObject("main");
+
+                df.forecastTemp.minAfternoon = (float) jTempObj.getDouble("temp_min");
+                df.forecastTemp.maxAfternoon = (float) jTempObj.getDouble("temp_max");
+
+                df.weather.currentCondition.setEvenHumidity((float) jTempObj.getDouble("humidity"));
+
+                JSONArray jWeatherArr = jDayForecast.getJSONArray("weather");
+                JSONObject jWeatherObj = jWeatherArr.getJSONObject(0);
+                df.weather.currentCondition.setEvenDescr(getString("description", jWeatherObj));
+                df.weather.currentCondition.setEvenIcon(getString("icon", jWeatherObj));
+            }
         }
 
 

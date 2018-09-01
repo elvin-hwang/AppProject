@@ -9,26 +9,23 @@ import java.util.Date;
 
 public class DayForecast {
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd, E");
     public Weather weather = new Weather();
     public ForecastTemp forecastTemp = new ForecastTemp();
     public long timestamp;
 
     public class ForecastTemp {
-        public float day;
-        public float min;
-        public float max;
-        public float night;
-        public float eve;
-        public float morning;
 
-        public float getDay() {
-            return day;
-        }
+        public float minMorning;
+        public float maxMorning;
 
-        public void setDay(float day) {
-            this.day = day;
-        }
+        public float minAfternoon;
+        public float maxAfternoon;
+
+        public float minEvening;
+        public float maxEvening;
+
+
     }
 
     public String getStringDate() {

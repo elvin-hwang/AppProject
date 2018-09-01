@@ -43,6 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:scaleX="2"
+                android:scaleY="2"
                 android:layout_margin="20sp"
                 android:layout_weight="2" />
 
@@ -75,15 +77,16 @@
                 android:fontFamily="@font/roboto_light"
                 android:textSize="16sp"
                 android:hint="19°C" />
+
             <TextView
-                android:id="@+id/mornPrecip"
+                android:id="@+id/mornHumid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:gravity="center"
-                android:textSize="12sp"
                 android:fontFamily="@font/roboto_light"
-                android:hint="30%" />
+                android:gravity="center"
+                android:hint="30%"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -111,6 +114,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:scaleX="2"
+                android:scaleY="2"
                 android:layout_margin="20sp"
                 android:layout_weight="2" />
 
@@ -143,15 +148,16 @@
                 android:textSize="16sp"
                 android:fontFamily="@font/roboto_light"
                 android:hint="19°C" />
+
             <TextView
-                android:id="@+id/aftPrecip"
+                android:id="@+id/aftHumid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:gravity="center"
-                android:textSize="12sp"
                 android:fontFamily="@font/roboto_light"
-                android:hint="30%" />
+                android:gravity="center"
+                android:hint="30%"
+                android:textSize="12sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -178,6 +184,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:scaleX="2"
+                android:scaleY="2"
                 android:layout_margin="20sp"
                 android:layout_weight="2" />
 
@@ -210,15 +218,16 @@
                 android:textSize="16sp"
                 android:fontFamily="@font/roboto_light"
                 android:hint="19°C" />
+
             <TextView
-                android:id="@+id/evenPrecip"
+                android:id="@+id/evenHumid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:gravity="center"
-                android:textSize="12sp"
                 android:fontFamily="@font/roboto_light"
-                android:hint="30%" />
+                android:gravity="center"
+                android:hint="30%"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
