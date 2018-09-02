@@ -48,14 +48,17 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast> {
             holder.mornName = (TextView) row.findViewById(R.id.mornName);
             holder.mornMax = (TextView) row.findViewById(R.id.mornMax);
             holder.mornHumid = (TextView) row.findViewById(R.id.mornHumid);
+            holder.mornIcon = (ImageView) row.findViewById(R.id.mornIcon);
 
             holder.aftName = (TextView) row.findViewById(R.id.aftName);
             holder.aftMax = (TextView) row.findViewById(R.id.aftMax);
             holder.aftHumid = (TextView) row.findViewById(R.id.aftHumid);
+            holder.aftIcon = (ImageView) row.findViewById(R.id.aftIcon);
 
             holder.evenName = (TextView) row.findViewById(R.id.evenName);
             holder.evenMax = (TextView) row.findViewById(R.id.evenMax);
             holder.evenHumid = (TextView) row.findViewById(R.id.evenHumid);
+            holder.evenIcon = (ImageView) row.findViewById(R.id.evenIcon);
 
             row.setTag(holder);
 
@@ -69,17 +72,14 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast> {
         holder.mornName.setText(curr.weather.currentCondition.getMornDescr());
         holder.mornMax.setText((int) (curr.forecastTemp.maxMorning - 273.15) + "°C");
         holder.mornHumid.setText("%" + (int) curr.weather.currentCondition.getMornHumidity());
-        holder.mornIcon = (ImageView) row.findViewById(R.id.mornIcon);
 
         holder.aftName.setText(curr.weather.currentCondition.getAftDescr());
         holder.aftMax.setText((int) (curr.forecastTemp.maxAfternoon - 273.15) + "°C");
         holder.aftHumid.setText("%" + (int) curr.weather.currentCondition.getAftHumidity());
-        holder.aftIcon = (ImageView) row.findViewById(R.id.aftIcon);
 
         holder.evenName.setText(curr.weather.currentCondition.getEvenDescr());
         holder.evenMax.setText((int) (curr.forecastTemp.maxEvening - 273.15) + "°C");
         holder.evenHumid.setText("%" + (int) curr.weather.currentCondition.getEvenHumidity());
-        holder.evenIcon = (ImageView) row.findViewById(R.id.evenIcon);
 
 
         Picasso.with(context).load("http://openweathermap.org/img/w/"

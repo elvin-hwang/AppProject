@@ -3,10 +3,12 @@ package com.example.grace.appproject;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -43,7 +45,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             holder.textLocation = (TextView)row.findViewById(R.id.task_location);
             holder.textDate = (TextView)row.findViewById(R.id.task_date);
             holder.textTime = (TextView)row.findViewById(R.id.task_time);
-            holder.priority = (TextView) row.findViewById(R.id.priority);
+            holder.priority = (ImageView) row.findViewById(R.id.priority);
 
             row.setTag(holder);
 
@@ -64,25 +66,22 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
     static class ViewHolder
     {
-        TextView textTitle, textLocation, textDate, textTime, priority;
+        TextView textTitle, textLocation, textDate, textTime;
+        ImageView priority;
     }
 
     private void setPriority(ViewHolder holder, String s) {
         switch (s) {
             case "low":
-                holder.priority.setText("!");
-                holder.priority.setTextColor(Color.parseColor("#006400"));
+                //holder.priority.setImageBitmap();
                 break;
             case "med":
-                holder.priority.setText("! !");
-                holder.priority.setTextColor(Color.parseColor("#FF8C00"));
+                //holder.priority.setBackgroundResource(R.drawable.orange_icon);
                 break;
             case "high":
-                holder.priority.setText("! ! !");
-                holder.priority.setTextColor(Color.parseColor("#800000"));
+                //holder.priority.setBackgroundResource(R.drawable.red_icon);
                 break;
             default:
-                holder.priority.setText("");
                 break;
         }
     }

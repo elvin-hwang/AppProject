@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.example.grace.appproject.model.DayForecast;
@@ -28,6 +29,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnAlarm, btnTodo;
     private ListView lv;
     WeatherAdapter mAdapter;
+    ExpandableWeatherAdapter nAdapter;
 
     LocationManager locationManager;
     String provider;
@@ -174,6 +176,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
     private void loadTaskList(ArrayList<DayForecast> forecasts) {
         mAdapter = new WeatherAdapter(WeatherActivity.this,R.layout.weather_content, forecasts);
+        nAdapter = new ExpandableWeatherAdapter(this, forecasts);
         lv.setAdapter(mAdapter);
     }
 
