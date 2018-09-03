@@ -103,7 +103,7 @@ public class JSONWeatherParser {
             index = i;
             break;
         }
-        
+
         for (int i = index; i < index + 4*8; i += 8) {
             DayForecast df = new DayForecast();
             JSONObject jDayForecast = jArr.getJSONObject(i);
