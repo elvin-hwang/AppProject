@@ -80,6 +80,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 holder.priority.setImageResource(R.drawable.ic_red_icon);
                 break;
             default:
+                holder.priority.setImageResource(0);
                 break;
         }
     }
