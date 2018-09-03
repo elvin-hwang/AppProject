@@ -101,7 +101,7 @@ public class JSONWeatherParser {
 
             long parseDate = jDayForecast.getLong("dt")*1000;
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-            dayFormat.setTimeZone(TimeZone.getTimeZone(now.getTimeZone().getDisplayName()));
+            //dayFormat.setTimeZone(TimeZone.getTimeZone(now.getTimeZone().getDisplayName()));
             String date = dayFormat.format(new Date(parseDate));
             if (day.equals(date)) continue;
             if (date.equals(exit)) break;
@@ -114,11 +114,11 @@ public class JSONWeatherParser {
 
             // Now we have the json object so we can extract the data
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
-            hourFormat.setTimeZone(TimeZone.getTimeZone(now.getTimeZone().getDisplayName()));
+            //hourFormat.setTimeZone(TimeZone.getTimeZone(now.getTimeZone().getDisplayName()));
             String hour = hourFormat.format(new Date(parseDate));
-            boolean nineAM = hour.equals("09");
-            boolean threePM = hour.equals("15");
-            boolean ninePM = hour.equals("21");
+            boolean nineAM = hour.equals("08");
+            boolean threePM = hour.equals("14");
+            boolean ninePM = hour.equals("20");
 
             if (nineAM) {
                 // Initialize DayForecast

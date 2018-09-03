@@ -32,8 +32,9 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
     private Button btnAlarm, btnTodo;
     private ExpandableListView lv;
-    private TextView city, temp, cond;
+    private TextView city, temp, cond, maxMin;
     private ImageView icon;
+
     ExpandableWeatherAdapter nAdapter;
 
     LocationManager locationManager;
@@ -56,6 +57,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         city = (TextView) findViewById(R.id.city);
         temp = (TextView) findViewById(R.id.temp);
         cond = (TextView) findViewById(R.id.cond);
+        maxMin = (TextView) findViewById(R.id.maxmin);
         icon = (ImageView) findViewById(R.id.icon);
 
         lv = (ExpandableListView) findViewById(R.id.lv);
@@ -87,6 +89,9 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         if (location == null) {
             lat = 49.2796;
             lng = 122.7985;
+
+            JSONWeatherTask task = new JSONWeatherTask();
+            task.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});
 
             JSONForecastWeatherTask task1 = new JSONForecastWeatherTask();
             task1.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});
@@ -132,8 +137,11 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             super.onPostExecute(weather);
 
             city.setText(weather.location.getCity() + ", " + weather.location.getCountry());
-            temp.setText(Math.round((weather.temperature.getTemp() - 275.15)) + "°C");
+            temp.setText((int) (weather.temperature.getTemp() - 273.15) + "°C");
             cond.setText(weather.currentCondition.getCondition() + " (" + weather.currentCondition.getDescr() + ")");
+            maxMin.setText("high/low: "
+                    + (int) (weather.temperature.getMaxTemp() - 273.15) + "°C/"
+                    + (int) (weather.temperature.getMinTemp() - 273.15) + "°C");
             setImage(weather.currentCondition.getIcon());
         }
 
