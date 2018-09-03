@@ -1,5 +1,8 @@
 package com.example.grace.appproject;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import com.example.grace.appproject.model.DayForecast;
 import com.example.grace.appproject.model.Location;
 import com.example.grace.appproject.model.Weather;
@@ -11,6 +14,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -24,7 +28,6 @@ public class JSONWeatherParser {
 
     public static Weather getWeather(String data) throws JSONException  {
         Weather weather = new Weather();
-        System.out.println("Data ["+data+"]");
         // We create out JSONObject from the data
         JSONObject jObj = new JSONObject(data);
 
@@ -68,8 +71,6 @@ public class JSONWeatherParser {
         JSONObject cObj = getObject("clouds", jObj);
         weather.clouds.setPerc(getInt("all", cObj));
 
-        // We download the icon to show
-
 
         return weather;
     }
@@ -81,6 +82,11 @@ public class JSONWeatherParser {
         int d = now.get(Calendar.DAY_OF_MONTH);
         String day = form.format(d);
         String exit = form.format(d+5);
+
+
+        float minTemp = 10000;
+        float maxTemp = 0;
+
 
         DayForecast df = new DayForecast();
         WeatherForecast forecast = new WeatherForecast();
@@ -94,15 +100,21 @@ public class JSONWeatherParser {
             JSONObject jDayForecast = jArr.getJSONObject(i);
 
             long parseDate = jDayForecast.getLong("dt")*1000;
-            SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.CANADA);
-            dayFormat.setTimeZone(TimeZone.getTimeZone("Canada, Vancouver"));
+            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            dayFormat.setTimeZone(TimeZone.getTimeZone(now.getTimeZone().getDisplayName()));
             String date = dayFormat.format(new Date(parseDate));
             if (day.equals(date)) continue;
             if (date.equals(exit)) break;
 
+            JSONObject jTempObj = jDayForecast.getJSONObject("main");
+            float min = (float) jTempObj.getDouble("temp_min");
+            float max = (float) jTempObj.getDouble("temp_max");
+            if (min < minTemp) minTemp = min;
+            if (max > maxTemp) maxTemp = max;
+
             // Now we have the json object so we can extract the data
-            SimpleDateFormat hourFormat = new SimpleDateFormat("HH", Locale.CANADA);
-            hourFormat.setTimeZone(TimeZone.getTimeZone("Canada, Vancouver"));
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+            hourFormat.setTimeZone(TimeZone.getTimeZone(now.getTimeZone().getDisplayName()));
             String hour = hourFormat.format(new Date(parseDate));
             boolean nineAM = hour.equals("09");
             boolean threePM = hour.equals("15");
@@ -113,8 +125,6 @@ public class JSONWeatherParser {
                 df.timestamp = parseDate;
 
                 // Temp is an object
-                JSONObject jTempObj = jDayForecast.getJSONObject("main");
-
                 df.forecastTemp.minMorning = (float) jTempObj.getDouble("temp_min");
                 df.forecastTemp.maxMorning = (float) jTempObj.getDouble("temp_max");
 
@@ -129,8 +139,6 @@ public class JSONWeatherParser {
             }
 
             if (threePM) {
-                JSONObject jTempObj = jDayForecast.getJSONObject("main");
-
                 df.forecastTemp.minAfternoon = (float) jTempObj.getDouble("temp_min");
                 df.forecastTemp.maxAfternoon = (float) jTempObj.getDouble("temp_max");
 
@@ -142,8 +150,6 @@ public class JSONWeatherParser {
                 df.weather.currentCondition.setAftIcon(getString("icon", jWeatherObj));
             }
             if (ninePM) {
-                JSONObject jTempObj = jDayForecast.getJSONObject("main");
-
                 df.forecastTemp.minEvening = (float) jTempObj.getDouble("temp_min");
                 df.forecastTemp.maxEvening = (float) jTempObj.getDouble("temp_max");
 
@@ -153,6 +159,9 @@ public class JSONWeatherParser {
                 JSONObject jWeatherObj = jWeatherArr.getJSONObject(0);
                 df.weather.currentCondition.setEvenDescr(getString("description", jWeatherObj));
                 df.weather.currentCondition.setEvenIcon(getString("icon", jWeatherObj));
+
+                df.forecastTemp.minTemp = minTemp;
+                df.forecastTemp.maxTemp = maxTemp;
 
                 forecast.addForecast(df);
                 df = new DayForecast();

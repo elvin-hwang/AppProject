@@ -15,20 +15,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.grace.appproject.model.DayForecast;
+import com.example.grace.appproject.model.Weather;
 import com.example.grace.appproject.model.WeatherForecast;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WeatherActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
     private Button btnAlarm, btnTodo;
-    private ListView lv;
-    WeatherAdapter mAdapter;
+    private ExpandableListView lv;
+    private TextView city, temp, cond;
+    private ImageView icon;
     ExpandableWeatherAdapter nAdapter;
 
     LocationManager locationManager;
@@ -42,20 +47,18 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_weather);
         init();
         initLocation();
-        // FOr testing only below
-//        ArrayList<DayForecast> forecasts = new ArrayList<DayForecast>();
-//        DayForecast one = new DayForecast();
-//        one.forecastTemp.setDay(1);
-//        DayForecast two = one;
-//        forecasts.add(one);
-//        forecasts.add(two);
-//        loadTaskList(forecasts);
     }
 
     private void init() {
         btnAlarm = (Button) findViewById(R.id.btnAlarm);
         btnTodo = (Button) findViewById(R.id.btnTodo);
-        lv = (ListView) findViewById(R.id.lv);
+
+        city = (TextView) findViewById(R.id.city);
+        temp = (TextView) findViewById(R.id.temp);
+        cond = (TextView) findViewById(R.id.cond);
+        icon = (ImageView) findViewById(R.id.icon);
+
+        lv = (ExpandableListView) findViewById(R.id.lv);
 
         btnTodo.setOnClickListener(this);
         btnAlarm.setOnClickListener(this);
@@ -105,7 +108,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-/*
+
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
 
         @Override
@@ -115,9 +118,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
             try {
                 weather = JSONWeatherParser.getWeather(data);
-                System.out.println("Weather ["+weather+"]");
-                // Let's retrieve the icon
-                weather.iconData = ( (new WeatherHttpClient()).getImage(weather.currentCondition.getIcon()));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -131,21 +131,19 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
 
-            if (weather.iconData != null && weather.iconData.length > 0) {
-                Bitmap img = BitmapFactory.decodeByteArray(weather.iconData, 0, weather.iconData.length);
-                imgView.setImageBitmap(img);
-            }
-
-
-            cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
-            temp.setText("" + Math.round((weather.temperature.getTemp() - 275.15)));
-            condDescr.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
+            city.setText(weather.location.getCity() + ", " + weather.location.getCountry());
+            temp.setText(Math.round((weather.temperature.getTemp() - 275.15)) + "°C");
+            cond.setText(weather.currentCondition.getCondition() + " (" + weather.currentCondition.getDescr() + ")");
+            setImage(weather.currentCondition.getIcon());
         }
 
-
-
     }
-*/
+    private void setImage(String i) {
+        Picasso.with(this).load("http://openweathermap.org/img/w/"
+                + i + ".png")
+                .into(this.icon);
+    }
+
 
     private class JSONForecastWeatherTask extends AsyncTask<String, Void, WeatherForecast> {
 
@@ -175,9 +173,23 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void loadTaskList(ArrayList<DayForecast> forecasts) {
-        mAdapter = new WeatherAdapter(WeatherActivity.this,R.layout.weather_content, forecasts);
-        nAdapter = new ExpandableWeatherAdapter(this, forecasts);
-        lv.setAdapter(mAdapter);
+        HashMap<DayForecast, ArrayList<DayForecast>> contents = new HashMap<>();
+        ArrayList<DayForecast> dayOne = new ArrayList<>();
+        ArrayList<DayForecast> dayTwo = new ArrayList<>();
+        ArrayList<DayForecast> dayThree = new ArrayList<>();
+        ArrayList<DayForecast> dayFour = new ArrayList<>();
+        dayOne.add(forecasts.get(0));
+        dayTwo.add(forecasts.get(1));
+        dayThree.add(forecasts.get(2));
+        dayFour.add(forecasts.get(3));
+
+        contents.put(forecasts.get(0), dayOne);
+        contents.put(forecasts.get(1), dayTwo);
+        contents.put(forecasts.get(2), dayThree);
+        contents.put(forecasts.get(3), dayFour);
+
+        nAdapter = new ExpandableWeatherAdapter(this, forecasts, contents);
+        lv.setAdapter(nAdapter);
     }
 
 
@@ -187,9 +199,9 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         lat = location.getLatitude();
         lng = location.getLongitude();
 
-        //TODO
-//        JSONWeatherTask task = new JSONWeatherTask();
-//        task.execute(new String[]{String.valueOf(lat),String.valueOf(lng)});
+
+        JSONWeatherTask task = new JSONWeatherTask();
+        task.execute(new String[]{String.valueOf(lat),String.valueOf(lng)});
 
         JSONForecastWeatherTask task1 = new JSONForecastWeatherTask();
         task1.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});

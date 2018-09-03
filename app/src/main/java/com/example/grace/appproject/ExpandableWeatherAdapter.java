@@ -1,6 +1,7 @@
 package com.example.grace.appproject;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.example.grace.appproject.model.DayForecast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by hosun on 2018-09-01.
@@ -20,19 +22,21 @@ import java.util.ArrayList;
 public class ExpandableWeatherAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private ArrayList<DayForecast> data; // header titles
+    private ArrayList<DayForecast> dataHeader; // header titles
+    private HashMap<DayForecast ,ArrayList<DayForecast>> weatherContent;
     // child data in format of header title, child title
 
-    public ExpandableWeatherAdapter(Context context, ArrayList<DayForecast> data) {
+    public ExpandableWeatherAdapter(Context context, ArrayList<DayForecast> listDataHeader, HashMap<DayForecast, ArrayList<DayForecast>> listHashMap) {
         this.context = context;
-        this.data = data;
+        this.dataHeader = listDataHeader;
+        this.weatherContent = listHashMap;
     }
 
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final DayForecast curr = data.get(groupPosition);
+        DayForecast curr = (DayForecast) getChild(groupPosition,childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -85,7 +89,7 @@ public class ExpandableWeatherAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        final DayForecast curr = data.get(groupPosition);
+        DayForecast curr = dataHeader.get(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -93,48 +97,57 @@ public class ExpandableWeatherAdapter extends BaseExpandableListAdapter {
         }
 
         TextView date = (TextView) convertView.findViewById(R.id.date);
+        TextView day = (TextView) convertView.findViewById(R.id.day);
+        TextView temp = (TextView) convertView.findViewById(R.id.temp);
+        ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
+
+
         date.setText(curr.getStringDate());
+        day.setText(curr.getStringDay());
+        day.setTypeface(Typeface.DEFAULT_BOLD);
+        temp.setText((int) (curr.forecastTemp.maxTemp - 273.15) + "°C/" + (int) (curr.forecastTemp.minTemp - 273.15) + "°C");
+
+        Picasso.with(context).load("http://openweathermap.org/img/w/"
+                + curr.weather.currentCondition.getAftIcon() + ".png")
+                .into(icon);
+
 
         return convertView;
     }
 
+
     @Override
     public int getGroupCount() {
-        return 0;
+        return dataHeader.size();
     }
-
     @Override
     public int getChildrenCount(int i) {
-        return 0;
+        return weatherContent.get(dataHeader.get(i)).size();
     }
-
     @Override
     public Object getGroup(int i) {
-        return null;
+        return dataHeader.get(i);
     }
-
     @Override
     public Object getChild(int i, int i1) {
-        return null;
+        return weatherContent.get(dataHeader.get(i)).get(i1); // i = Group Item , i1 = ChildItem
     }
 
     @Override
     public long getGroupId(int i) {
-        return 0;
+        return i;
     }
-
     @Override
     public long getChildId(int i, int i1) {
-        return 0;
+        return i1;
     }
-
     @Override
     public boolean hasStableIds() {
         return false;
     }
-
     @Override
     public boolean isChildSelectable(int i, int i1) {
-        return false;
+        return true;
     }
+
 }

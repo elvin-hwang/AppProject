@@ -1,4 +1,4 @@
-package com.example.grace.appproject;
+package com.example.grace.appproject.test;
 
 import org.junit.Test;
 

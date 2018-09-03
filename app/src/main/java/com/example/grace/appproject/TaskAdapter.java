@@ -2,8 +2,6 @@ package com.example.grace.appproject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,13 +71,13 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     private void setPriority(ViewHolder holder, String s) {
         switch (s) {
             case "low":
-                //holder.priority.setImageBitmap();
+                holder.priority.setImageResource(R.drawable.ic_green_icon);
                 break;
             case "med":
-                //holder.priority.setBackgroundResource(R.drawable.orange_icon);
+                holder.priority.setImageResource(R.drawable.ic_orange_icon);
                 break;
             case "high":
-                //holder.priority.setBackgroundResource(R.drawable.red_icon);
+                holder.priority.setImageResource(R.drawable.ic_red_icon);
                 break;
             default:
                 break;
