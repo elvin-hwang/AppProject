@@ -1,4 +1,4 @@
-package com.example.grace.appproject;
+package com.example.grace.appproject.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,6 +17,12 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.grace.appproject.DbHelper;
+import com.example.grace.appproject.PopActivity;
+import com.example.grace.appproject.R;
+import com.example.grace.appproject.Task;
+import com.example.grace.appproject.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,10 +107,9 @@ public class TaskFragment extends Fragment implements View.OnClickListener{
         final View v = view;
         CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
         checkBox.setChecked(false);
-        AlertDialog alertDialog = new AlertDialog.Builder(context)
-                //set icon
-                .setIcon(R.drawable.checkmark)
-
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        //set icon
+        alertDialog.setIcon(R.drawable.checkmark)
                 //set title
                 .setTitle("You Completed a Task!")
                 //set message
@@ -119,9 +124,15 @@ public class TaskFragment extends Fragment implements View.OnClickListener{
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {}
-                })
-                .show();
-        alertDialog.getWindow().getDecorView().getBackground().setColorFilter(new LightingColorFilter(0xFF000000, 0xffc9b8d1));
+                });
+        final AlertDialog alert = alertDialog.create();
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                alert.getWindow().getDecorView().getBackground().setColorFilter(new LightingColorFilter(0xFF000000, 0xffc9b8d1));
+            }
+        });
+        alert.show();
     }
 
     public void deleteTask(View view){
@@ -131,6 +142,12 @@ public class TaskFragment extends Fragment implements View.OnClickListener{
         String task = String.valueOf(taskTextView.getText());
         dbHelper.deleteTask(task);
         loadTaskList();
+    }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach (activity);
+        context = activity;
     }
 
 }

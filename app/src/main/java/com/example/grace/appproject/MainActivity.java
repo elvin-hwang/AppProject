@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.grace.appproject.model.*;
-import com.example.grace.appproject.Fragments.*;
+import com.example.grace.appproject.fragments.*;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -94,12 +94,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
-    private void setButton(Button btn) {
-        btnTodo.setBackgroundColor(Color.parseColor("#80000000"));
-        btnAlarm.setBackgroundColor(Color.parseColor("#80000000"));
-        btnWeather.setBackgroundColor(Color.parseColor("#80000000"));
-        btn.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
+    public void exitDialog(View view) {
+        FragmentManager fm = getSupportFragmentManager();
+        TaskFragment fragment = (TaskFragment) fm.findFragmentById(R.id.fragment_place);
+        fragment.exitDialog(view);
     }
+
 
     private void initLocation() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         locationManager.requestLocationUpdates(provider, 60000, 100, this);
     }
 
-
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
 
         @Override
@@ -227,5 +226,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    private void setButton(Button btn) {
+        btnTodo.setBackgroundColor(Color.parseColor("#80000000"));
+        btnAlarm.setBackgroundColor(Color.parseColor("#80000000"));
+        btnWeather.setBackgroundColor(Color.parseColor("#80000000"));
+        btn.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
     }
 }

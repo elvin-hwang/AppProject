@@ -1,33 +1,36 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/task_fragment"
+    android:tag="task_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.grace.appproject.TaskFragment">
+    tools:context="com.example.grace.appproject.fragments.TaskFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <ListView
-        android:id="@+id/lv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.8"
-        android:background="#c9b8d1">
 
-    </ListView>
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="#c9b8d1">
 
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="6"
-        android:background="#856ec7"
-        android:fontFamily="@font/roboto_regular"
-        android:text="+ Click to Add"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="16dp" />
+        </ListView>
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:background="#856ec7"
+            android:fontFamily="@font/roboto_regular"
+            android:text="+ Click to Add"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
 
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.example.grace.appproject;
+package com.example.grace.appproject.fragments;
 
 
 import android.Manifest;
@@ -17,6 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import com.example.grace.appproject.ExpandableWeatherAdapter;
+import com.example.grace.appproject.JSONWeatherParser;
+import com.example.grace.appproject.R;
+import com.example.grace.appproject.WeatherHttpClient;
 import com.example.grace.appproject.model.DayForecast;
 import com.example.grace.appproject.model.WeatherForecast;
 

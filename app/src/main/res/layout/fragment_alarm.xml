@@ -1,15 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alarm_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.grace.appproject.AlarmFragment">
+    tools:context="com.example.grace.appproject.fragments.AlarmFragment">
 
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c9b8d1">
-    </ListView>
+        android:background="#c9b8d1"></ListView>
 
 
 </FrameLayout>

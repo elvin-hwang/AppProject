@@ -127,7 +127,7 @@
     </LinearLayout>
 
     <fragment
-        android:name="com.example.grace.appproject.TaskFragment"
+        android:name="com.example.grace.appproject.fragments.TaskFragment"
         android:id="@+id/fragment_place"
         android:layout_width="match_parent"
         android:layout_height="0dp"
