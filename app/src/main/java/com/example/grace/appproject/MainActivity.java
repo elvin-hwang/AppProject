@@ -22,7 +22,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.grace.appproject.model.Weather;
+import com.example.grace.appproject.model.*;
+import com.example.grace.appproject.Fragments.*;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
