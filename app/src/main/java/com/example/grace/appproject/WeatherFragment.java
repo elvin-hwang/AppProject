@@ -3,7 +3,6 @@ package com.example.grace.appproject;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 
 import com.example.grace.appproject.model.DayForecast;
 import com.example.grace.appproject.model.WeatherForecast;
