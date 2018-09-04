@@ -3,6 +3,10 @@ package com.example.grace.appproject;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+
 
 import android.util.Log;
 import android.view.View;
@@ -36,14 +41,12 @@ import java.util.Comparator;
 
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
-    private Button btnAlarm, btnWeather, btnAdd;
-    private ListView lv;
+    private Button btnAlarm, btnWeather, btnTodo;
     private TextView city, temp, cond, maxMin;
     private ImageView icon;
     DbHelper dbHelper;
-    TaskAdapter mAdapter;
 
     static double lat, lng;
     int MY_PERMISSION = 0;
@@ -55,15 +58,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        loadTaskList();
         initLocation();
     }
 
     private void init() {
         btnAlarm = (Button) findViewById(R.id.btnAlarm);
         btnWeather = (Button) findViewById(R.id.btnWeather);
-        btnAdd = (Button) findViewById(R.id.btnAdd);
-        lv = (ListView) findViewById(R.id.lv);
+        btnTodo = (Button) findViewById(R.id.btnTodo);
         dbHelper = new DbHelper(this);
 
         city = (TextView) findViewById(R.id.city);
@@ -71,102 +72,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cond = (TextView) findViewById(R.id.cond);
         maxMin = (TextView) findViewById(R.id.maxmin);
         icon = (ImageView) findViewById(R.id.icon);
-
-        btnAdd.setOnClickListener(this);
-        btnAlarm.setOnClickListener(this);
-        btnWeather.setOnClickListener(this);
     }
 
-    @Override
     public void onClick(View view) {
-        Intent myIntent;
+        Fragment fragment;
+        FragmentManager fm;
+        FragmentTransaction ft;
         switch (view.getId()) {
-            case R.id.btnAdd:
-                myIntent = new Intent(MainActivity.this, PopActivity.class);
-                startActivityForResult(myIntent,1);
-                break;
             case R.id.btnWeather:
-                myIntent = new Intent(view.getContext(), WeatherActivity.class);
-                startActivity(myIntent);
+                setButton(btnWeather);
+                fragment = new WeatherFragment();
+                fm = getSupportFragmentManager();
+                ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_place,fragment);
+                ft.commit();
                 break;
             case R.id.btnAlarm:
-                myIntent = new Intent(view.getContext(), AlarmActivity.class);
-                startActivity(myIntent);
+                setButton(btnAlarm);
+                fragment = new AlarmFragment();
+                fm = getSupportFragmentManager();
+                ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_place,fragment);
+                ft.commit();
+                break;
+            case R.id.btnTodo:
+                setButton(btnTodo);
+                fragment = new TaskFragment();
+                fm = getSupportFragmentManager();
+                ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_place,fragment);
+                ft.commit();
                 break;
         }
     }
 
-    private void loadTaskList() {
-        ArrayList<Task> taskList = dbHelper.getTaskList();
-        if(mAdapter==null){
-            mAdapter = new TaskAdapter(MainActivity.this,R.layout.row, taskList);
-            mAdapter.sort(new Comparator<Task>() {
-                @Override
-                public int compare(Task task, Task t1) {
-                    return task.compareTo(t1);
-                }
-            });
-            lv.setAdapter(mAdapter);
-            Collections.sort(taskList);
-            mAdapter.notifyDataSetChanged();
-        }
-        else{
-            mAdapter.clear();
-            Collections.sort(taskList);
-            mAdapter.addAll(taskList);
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (1) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    String[] task = data.getStringArrayExtra("result");
-                    dbHelper.insertNewTask(task[0], task[1], task[2], task[3], task[4]);
-                    loadTaskList();
-                }
-                break;
-            }
-        }
-    }
-
-    public void exitDialog(View view) {
-        final View v = view;
-        CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
-        checkBox.setChecked(false);
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                //set icon
-                .setIcon(R.drawable.checkmark)
-
-                //set title
-                .setTitle("You Completed a Task!")
-                //set message
-                .setMessage("Would you like to remove this task?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        deleteTask(v);
-                    }
-                })
-                //set negative button
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
-                })
-                .show();
-        alertDialog.getWindow().getDecorView().getBackground().setColorFilter(new LightingColorFilter(0xFF000000, 0xffc9b8d1));
-    }
-
-    public void deleteTask(View view){
-        View parent = (View)view.getParent();
-        TextView taskTextView = (TextView)parent.findViewById(R.id.task_title);
-        Log.e("String", (String) taskTextView.getText());
-        String task = String.valueOf(taskTextView.getText());
-        dbHelper.deleteTask(task);
-        loadTaskList();
+    private void setButton(Button btn) {
+        btnTodo.setBackgroundColor(Color.parseColor("#80000000"));
+        btnAlarm.setBackgroundColor(Color.parseColor("#80000000"));
+        btnWeather.setBackgroundColor(Color.parseColor("#80000000"));
+        btn.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
     }
 
     private void initLocation() {

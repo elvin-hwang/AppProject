@@ -1,5 +1,6 @@
 package com.example.grace.appproject;
 
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -9,31 +10,33 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.example.grace.appproject.model.DayForecast;
-import com.example.grace.appproject.model.Weather;
 import com.example.grace.appproject.model.WeatherForecast;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class WeatherActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
-    private Button btnAlarm, btnTodo;
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class WeatherFragment extends Fragment implements LocationListener{
+
+    private View view;
+    private Context context;
+
     private ExpandableListView lv;
-    private TextView city, temp, cond, maxMin;
-    private ImageView icon;
 
     ExpandableWeatherAdapter nAdapter;
 
@@ -43,38 +46,28 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     int MY_PERMISSION = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_weather, container, false);
+        context = getActivity();
         init();
         initLocation();
+        return view;
     }
 
+
     private void init() {
-        btnAlarm = (Button) findViewById(R.id.btnAlarm);
-        btnTodo = (Button) findViewById(R.id.btnTodo);
-
-        city = (TextView) findViewById(R.id.city);
-        temp = (TextView) findViewById(R.id.temp);
-        cond = (TextView) findViewById(R.id.cond);
-        maxMin = (TextView) findViewById(R.id.maxmin);
-        icon = (ImageView) findViewById(R.id.icon);
-
-        lv = (ExpandableListView) findViewById(R.id.lv);
-
-        btnTodo.setOnClickListener(this);
-        btnAlarm.setOnClickListener(this);
+        lv = (ExpandableListView) view.findViewById(R.id.lv);
     }
 
     private void initLocation() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
-            ActivityCompat.requestPermissions(WeatherActivity.this, new String[]{
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
                     Manifest.permission.INTERNET,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -90,66 +83,9 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             lat = 49.2796;
             lng = 122.7985;
 
-            JSONWeatherTask task = new JSONWeatherTask();
-            task.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});
-
             JSONForecastWeatherTask task1 = new JSONForecastWeatherTask();
             task1.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent myIntent;
-        switch (view.getId()) {
-            case R.id.btnTodo:
-                myIntent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(myIntent);
-                break;
-            case R.id.btnAlarm:
-                myIntent = new Intent(view.getContext(), AlarmActivity.class);
-                startActivity(myIntent);
-                break;
-        }
-    }
-
-
-    private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
-
-        @Override
-        protected Weather doInBackground(String... params) {
-            Weather weather = new Weather();
-            String data = ( (new WeatherHttpClient()).getWeatherData(params[0], params[1]));
-
-            try {
-                weather = JSONWeatherParser.getWeather(data);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return weather;
-
-        }
-
-
-        @Override
-        protected void onPostExecute(Weather weather) {
-            super.onPostExecute(weather);
-
-            city.setText(weather.location.getCity() + ", " + weather.location.getCountry());
-            temp.setText((int) (weather.temperature.getTemp() - 273.15) + "°C");
-            cond.setText(weather.currentCondition.getCondition() + " (" + weather.currentCondition.getDescr() + ")");
-            maxMin.setText("high/low: "
-                    + (int) (weather.temperature.getMaxTemp() - 273.15) + "°C/"
-                    + (int) (weather.temperature.getMinTemp() - 273.15) + "°C");
-            setImage(weather.currentCondition.getIcon());
-        }
-
-    }
-    private void setImage(String i) {
-        Picasso.with(this).load("http://openweathermap.org/img/w/"
-                + i + ".png")
-                .into(this.icon);
     }
 
 
@@ -196,31 +132,25 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         contents.put(forecasts.get(2), dayThree);
         contents.put(forecasts.get(3), dayFour);
 
-        nAdapter = new ExpandableWeatherAdapter(this, forecasts, contents);
+        nAdapter = new ExpandableWeatherAdapter(context, forecasts, contents);
         lv.setAdapter(nAdapter);
     }
 
-
-    // TODO LocationListener
     @Override
     public void onLocationChanged(Location location) {
         lat = location.getLatitude();
         lng = location.getLongitude();
-
-
-        JSONWeatherTask task = new JSONWeatherTask();
-        task.execute(new String[]{String.valueOf(lat),String.valueOf(lng)});
 
         JSONForecastWeatherTask task1 = new JSONForecastWeatherTask();
         task1.execute(new String[] {String.valueOf(lat), String.valueOf(lng)});
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(WeatherActivity.this, new String[]{
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
                     Manifest.permission.INTERNET,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -236,11 +166,11 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(WeatherActivity.this, new String[]{
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
                     Manifest.permission.INTERNET,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -260,4 +190,5 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     public void onProviderEnabled(String s) {}
     @Override
     public void onProviderDisabled(String s) {}
+
 }

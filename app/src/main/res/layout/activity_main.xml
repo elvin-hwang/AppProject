@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="#80000000"
             android:fontFamily="@font/roboto_light"
             android:onClick="onClick"
             android:text="Alarm"
@@ -105,9 +105,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/darker_gray"
+            android:background="#ffaaaaaa"
             android:fontFamily="@font/roboto_light"
             android:gravity="center"
+            android:onClick="onClick"
             android:text="To-Do"
             android:textAllCaps="false"
             android:textColor="#1e053c" />
@@ -117,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="#80000000"
             android:fontFamily="@font/roboto_light"
             android:onClick="onClick"
             android:text="Weather"
@@ -125,26 +126,14 @@
             android:textColor="#1e053c" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lv"
+    <fragment
+        android:name="com.example.grace.appproject.TaskFragment"
+        android:id="@+id/fragment_place"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        android:background="#c9b8d1">
+        android:layout_weight="6.8"
+        android:background="#ffffff">
+    </fragment>
 
-    </ListView>
-
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
-        android:background="#856ec7"
-        android:fontFamily="@font/roboto_regular"
-        android:onClick="onClick"
-        android:text="+ Click to Add"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="16dp" />
 
 </LinearLayout>
