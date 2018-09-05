@@ -19,6 +19,7 @@ import android.widget.ExpandableListView;
 
 import com.example.grace.appproject.ExpandableWeatherAdapter;
 import com.example.grace.appproject.JSONWeatherParser;
+import com.example.grace.appproject.MainActivity;
 import com.example.grace.appproject.R;
 import com.example.grace.appproject.WeatherHttpClient;
 import com.example.grace.appproject.model.DayForecast;
@@ -35,6 +36,8 @@ import java.util.HashMap;
  */
 public class WeatherFragment extends Fragment implements LocationListener{
 
+    private static ArrayList<DayForecast> fc;
+    
     private View view;
     private Context context;
 
@@ -53,6 +56,8 @@ public class WeatherFragment extends Fragment implements LocationListener{
         context = getActivity();
         init();
         initLocation();
+
+        if (fc != null) loadTaskList(fc);
         return view;
     }
 
@@ -90,7 +95,6 @@ public class WeatherFragment extends Fragment implements LocationListener{
         }
     }
 
-
     private class JSONForecastWeatherTask extends AsyncTask<String, Void, WeatherForecast> {
 
         @Override
@@ -113,17 +117,19 @@ public class WeatherFragment extends Fragment implements LocationListener{
         protected void onPostExecute(WeatherForecast forecastWeather) {
             super.onPostExecute(forecastWeather);
 
-            loadTaskList(forecastWeather.getForecasts());
+            fc = forecastWeather.getForecasts();
+            loadTaskList(fc);
         }
     }
 
-
     private void loadTaskList(ArrayList<DayForecast> forecasts) {
         HashMap<DayForecast, ArrayList<DayForecast>> contents = new HashMap<>();
+
         ArrayList<DayForecast> dayOne = new ArrayList<>();
         ArrayList<DayForecast> dayTwo = new ArrayList<>();
         ArrayList<DayForecast> dayThree = new ArrayList<>();
         ArrayList<DayForecast> dayFour = new ArrayList<>();
+
         dayOne.add(forecasts.get(0));
         dayTwo.add(forecasts.get(1));
         dayThree.add(forecasts.get(2));
@@ -137,6 +143,7 @@ public class WeatherFragment extends Fragment implements LocationListener{
         nAdapter = new ExpandableWeatherAdapter(context, forecasts, contents);
         lv.setAdapter(nAdapter);
     }
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -183,7 +190,7 @@ public class WeatherFragment extends Fragment implements LocationListener{
 
             }, MY_PERMISSION);
         }
-        locationManager.requestLocationUpdates(provider, 60000, 100, this);
+        locationManager.requestLocationUpdates(provider, 400, 100, this);
     }
 
     @Override

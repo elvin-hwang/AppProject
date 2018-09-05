@@ -28,6 +28,8 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
@@ -174,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             }, MY_PERMISSION);
         }
-        locationManager.requestLocationUpdates(provider, 60000, 100, this);
+        locationManager.requestLocationUpdates(provider, 400, 100, this);
     }
 
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
